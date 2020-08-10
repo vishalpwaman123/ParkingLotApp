@@ -5,6 +5,7 @@ using System.Text;
 using RepositoryLayer.Interface;
 using CommanLayer.ResponseModel;
 using CommanLayer.RequestModel;
+using CommonLayer.RequestModel;
 
 namespace BusinessLayer.Service
 {
@@ -29,7 +30,7 @@ namespace BusinessLayer.Service
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public RUserModel RegisterUser(UserModel user)
+        public RUserModel RegisterUser(RegistrationUserModel user)
         {
             try
             {
@@ -40,6 +41,67 @@ namespace BusinessLayer.Service
                 throw exception;
             }
         }
+
+        public RUserModel Userlogin(UserLoginModel user)
+        {
+            try
+            {
+                return this.userRL.Userlogin(user);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        public List<RUserModel> GetAllUser()
+        {
+            try
+            {
+                return this.userRL.GetAllUser();
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        public UUserModel UpdateUserData(UUserModel user)
+        {
+            try
+            {
+                return this.userRL.UpdateUserData(user);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        public RUserModel DeleteUserData(int user)
+        {
+            try
+            {
+                return this.userRL.DeleteUserData(user);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        public RUserModel GetUserDetail(int user)
+        {
+            try
+            {
+                return this.userRL.GetUserDetail(user);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
 
     }
 }

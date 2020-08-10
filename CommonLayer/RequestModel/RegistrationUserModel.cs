@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CommanLayer.RequestModel
 {
-    public class UserModel
+    public class RegistrationUserModel
     {
 
         [Required(ErrorMessage = "Firstname is Required")]

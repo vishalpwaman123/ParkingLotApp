@@ -26,5 +26,7 @@ namespace CommanLayer.ResponseModel
 
         public string Gender { get; set; }
 
+        public string DateAndTime { get; set; }
+
     }
 }

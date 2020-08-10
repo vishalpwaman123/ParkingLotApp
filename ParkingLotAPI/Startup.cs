@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RepositoryLayer.Interface;
+using RepositoryLayer.Service;
 using RepositoryLayer.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -32,6 +33,8 @@ namespace ParkingLotAPI
         {
             services.AddTransient<IUserBL, UserBL>();
             services.AddTransient<IUserRL, UserRL>();
+            services.AddTransient<IParkingBL, ParkingBL>();
+            services.AddTransient<IParkingRL, ParkingRL>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c =>

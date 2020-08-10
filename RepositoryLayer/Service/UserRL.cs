@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -11,6 +11,7 @@ using CommanLayer.Enum;
 using CommanLayer.Exceptions;
 using CommanLayer.RequestModel;
 using CommanLayer.ResponseModel;
+using CommonLayer.RequestModel;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Interface;
 
@@ -50,7 +51,7 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public RUserModel RegisterUser(UserModel user)
+        public RUserModel RegisterUser(RegistrationUserModel user)
         {
             try
             {
@@ -94,7 +95,8 @@ namespace RepositoryLayer.Services
                     {
                          status = sqlDataReader.GetInt32(0);
                         usermodel.UserId = Convert.ToInt32(sqlDataReader["UserId"]);
-                        if (status == 1)
+                        usermodel.DateAndTime = sqlDataReader["ModificationDate"].ToString();
+                        if (status > 0)
                         {
                             return DataCopy(usermodel, user);
                         }
@@ -112,7 +114,70 @@ namespace RepositoryLayer.Services
             }
         }
 
-        private RUserModel DataCopy(RUserModel usermodel, UserModel user)
+        public RUserModel Userlogin(UserLoginModel user)
+        {
+            try
+            {
+                int status = 0;
+                int FlagsAttribute = 1;
+                if(user.EmailId == null || user.Password == null )
+                {
+                    throw new Exception(UserExceptions.ExceptionType.NULL_EXCEPTION.ToString());
+                }
+
+                if(user.EmailId == "" || user.Password == "" )
+                {
+                    throw new Exception(UserExceptions.ExceptionType.EMPTY_EXCEPTION.ToString());
+                }
+                SqlCommand sqlCommand = new SqlCommand("spGetUserLogin", this.sqlConnectionVariable);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@EmailID", user.EmailId);
+                user.Password = Encrypt(user.Password).ToString();
+                sqlCommand.Parameters.AddWithValue("@UserPassword", user.Password);
+                this.sqlConnectionVariable.Open();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                RUserModel usermodel = new RUserModel();
+                while (sqlDataReader.Read())
+                {
+                    status = sqlDataReader.GetInt32(0);
+                    if ( status > 0 )
+                    {
+                        
+                            usermodel.UserId = Convert.ToInt32(sqlDataReader["UserId"]);
+                            usermodel.FirstName = sqlDataReader["FirstName"].ToString();
+                            usermodel.LastName = sqlDataReader["LastName"].ToString();
+                            usermodel.EmailId = sqlDataReader["EmailId"].ToString();
+                            usermodel.LocalAddress = sqlDataReader["LocalAddress"].ToString();
+                            usermodel.MobileNumber = sqlDataReader["MobileNumber"].ToString();
+                            usermodel.Gender = sqlDataReader["Gender"].ToString();
+                            usermodel.Role = sqlDataReader["Role"].ToString();
+                            usermodel.DateAndTime = sqlDataReader["ModificationDate"].ToString();
+                            FlagsAttribute = 0;
+                            break;
+                    }else
+                    {
+                            break;
+                    }
+                }
+
+                this.sqlConnectionVariable.Close();
+                if (FlagsAttribute == 0)
+                {
+                    return usermodel;
+                }
+
+                usermodel = null;
+                return usermodel;
+
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+
+         private RUserModel DataCopy(RUserModel usermodel, RegistrationUserModel user)
         {
             usermodel.FirstName = user.FirstName;
             usermodel.LastName = user.LastName;
@@ -203,5 +268,200 @@ namespace RepositoryLayer.Services
             return reader.ReadToEnd();
         }
 
+        /// <summary>
+        /// Declaration of get all employee method
+        /// </summary>
+        /// <returns>return list</returns>
+        public List<RUserModel> GetAllUser()
+        {
+            try
+            {
+                List<RUserModel> employeeModelsList = new List<RUserModel>();
+                SqlCommand sqlCommand = new SqlCommand("spGetAllUser", this.sqlConnectionVariable);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                this.sqlConnectionVariable.Open();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    RUserModel userModel = new RUserModel();
+                    if (Convert.ToInt32(sqlDataReader["PresentState"]) == 1)
+                    {
+                        userModel.UserId = Convert.ToInt32(sqlDataReader["UserId"]);
+                        userModel.FirstName = sqlDataReader["FirstName"].ToString();
+                        userModel.LastName = sqlDataReader["LastName"].ToString();
+                        userModel.EmailId = sqlDataReader["EmailId"].ToString();
+                        userModel.MobileNumber = sqlDataReader["MobileNumber"].ToString();
+                        userModel.LocalAddress = sqlDataReader["LocalAddress"].ToString();
+                        userModel.Gender = sqlDataReader["Gender"].ToString();
+                        userModel.Role = sqlDataReader["Role"].ToString();
+                        userModel.DateAndTime = sqlDataReader["ModificationDate"].ToString();
+                        employeeModelsList.Add(userModel);
+                    }
+                }
+                this.sqlConnectionVariable.Close();
+                return employeeModelsList;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Declaration update employee method 
+        /// </summary>
+        /// <param name="userModel">employee model object passing</param>
+        /// <returns>Return boolean value</returns>
+        public UUserModel UpdateUserData(UUserModel userModel)
+        {
+            try
+            {
+                if (!EmailChecking(userModel.EmailId))
+                {
+                    SqlCommand sqlCommand = new SqlCommand("spUpdateUserData", this.sqlConnectionVariable);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@UserId", userModel.UserId);
+                    sqlCommand.Parameters.AddWithValue("@FirstName", userModel.FirstName);
+                    sqlCommand.Parameters.AddWithValue("@LastName", userModel.LastName);
+                    sqlCommand.Parameters.AddWithValue("@EmailId", userModel.EmailId);
+                    sqlCommand.Parameters.AddWithValue("@MobileNumber", userModel.MobileNumber);
+                    sqlCommand.Parameters.AddWithValue("@CurrentAddress", userModel.LocalAddress);
+                    sqlCommand.Parameters.AddWithValue("@Gender", userModel.Gender);
+                    sqlCommand.Parameters.AddWithValue("@Role", userModel.Role);
+                    this.sqlConnectionVariable.Open();
+                    //var response = sqlCommand.ExecuteNonQuery();
+                    int status = 0;
+                    SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                    while (sqlDataReader.Read())
+                    {
+                        status = sqlDataReader.GetInt32(0);
+                        if (status == 1)
+                        {
+                            this.sqlConnectionVariable.Close();
+                            return userModel;
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }
+                this.sqlConnectionVariable.Close();
+                return null;
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+
+        public RUserModel DeleteUserData(int UserId)
+        {
+            try
+            {
+                int status = 0;
+                int FlagsAttribute = 1;
+                if (UserId == 0 )
+                {
+                    throw new Exception(UserExceptions.ExceptionType.NULL_EXCEPTION.ToString());
+                }
+                
+                SqlCommand sqlCommand = new SqlCommand("spDeleteUser", this.sqlConnectionVariable);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@UserID", UserId);
+                this.sqlConnectionVariable.Open();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                RUserModel usermodel = new RUserModel();
+                while (sqlDataReader.Read())
+                {
+                    status = sqlDataReader.GetInt32(0);
+                    if (status == UserId)
+                    {
+                        usermodel.UserId = Convert.ToInt32(sqlDataReader["UserId"]);
+                        usermodel.FirstName = sqlDataReader["FirstName"].ToString();
+                        usermodel.LastName = sqlDataReader["LastName"].ToString();
+                        usermodel.EmailId = sqlDataReader["EmailId"].ToString();
+                        usermodel.LocalAddress = sqlDataReader["LocalAddress"].ToString();
+                        usermodel.MobileNumber = sqlDataReader["MobileNumber"].ToString();
+                        usermodel.Gender = sqlDataReader["Gender"].ToString();
+                        usermodel.Role = sqlDataReader["Role"].ToString();
+                        usermodel.DateAndTime = sqlDataReader["ModificationDate"].ToString();
+                        FlagsAttribute = 0;
+                        break;
+                    }
+                        break;  
+                }
+
+                this.sqlConnectionVariable.Close();
+                if (FlagsAttribute == 0)
+                {
+                    return usermodel;
+                }
+
+                usermodel = null;
+                return usermodel;
+
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// Declaration of employee details method
+        /// </summary>
+        /// <param name="Id">passing id</param>
+        /// <returns>return employee model object</returns>
+        public RUserModel GetUserDetail(int Id)
+        {
+            try
+            {
+                RUserModel userModel = new RUserModel();
+
+                SqlCommand sqlCommand = new SqlCommand("spGetUserDetailById", this.sqlConnectionVariable);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@UserId", Id);
+                this.sqlConnectionVariable.Open();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                int status = 0;
+                while (sqlDataReader.Read())
+                {
+                    status = sqlDataReader.GetInt32(0);
+                    //EmployeeModel userModel = new EmployeeModel();
+                    if (Id == status)
+                    {
+                        userModel.UserId = Convert.ToInt32(sqlDataReader["UserId"]);
+                        userModel.FirstName = sqlDataReader["FirstName"].ToString();
+                        userModel.LastName = sqlDataReader["LastName"].ToString();
+                        userModel.EmailId = sqlDataReader["EmailId"].ToString();
+                        userModel.MobileNumber = sqlDataReader["MobileNumber"].ToString();
+                        userModel.LocalAddress = sqlDataReader["LocalAddress"].ToString();
+                        userModel.Gender = sqlDataReader["Gender"].ToString();
+                        userModel.Role = sqlDataReader["Role"].ToString();
+                        userModel.DateAndTime = sqlDataReader["ModificationDate"].ToString();
+                        break;
+                    }
+                    break;
+                }
+
+                if(status == 0)
+                {
+                    return null;
+                }
+                return userModel;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.sqlConnectionVariable.Close();
+            }
+        }
     }
 }
