@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using BusinessLayer.Interface;
 using CommanLayer.Enum;
 using CommanLayer.Exceptions;
 using CommanLayer.RequestModel;
 using CommanLayer.ResponseModel;
 using CommonLayer.RequestModel;
+using CommonLayer.ResponseModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Interface;
 using RepositoryLayer.Services;
 
@@ -94,11 +99,11 @@ namespace ParkingLotApi.Controllers
         {
             try
             {
-                RUserModel responseUser = null;
+                RTUserModel responseUser;
 
                 if (!user.Equals(null))
                 {
-                    responseUser = userBL.Userlogin(user);
+                    responseUser = userBL.Userlogin(user); 
                 }
                 else
                 {
@@ -107,6 +112,7 @@ namespace ParkingLotApi.Controllers
 
                 if (responseUser != null)
                 {
+                    responseUser.Token = GenerateJsonWebToken(responseUser);
                     bool Success = true;
                     var Message = "Login Successfull";
                     return Ok(new { Success, Message, Data = responseUser });
@@ -131,7 +137,7 @@ namespace ParkingLotApi.Controllers
         /// </summary>
         /// <returns>return action result</returns>
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         [Route("User")]
         public IActionResult GetAllEmployee()
         {
@@ -166,7 +172,7 @@ namespace ParkingLotApi.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        [Authorize]
         [HttpPut]
         [Route("UserId")]
         public IActionResult UpdateUserData([FromBody] UUserModel user)
@@ -204,6 +210,7 @@ namespace ParkingLotApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{UserId}")]
         public ActionResult GetUserDetail([FromRoute] int UserId)
         {
@@ -246,7 +253,7 @@ namespace ParkingLotApi.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        [Authorize]
         [HttpDelete("{UserId}")]
         
         public IActionResult DeleteUserData([FromRoute] int UserId)
@@ -282,6 +289,34 @@ namespace ParkingLotApi.Controllers
                 bool Success = false;
                 return BadRequest(new { Success, Message = exception.Message });
             }
+        }
+
+
+        /// <summary>
+        /// Function For JsonToken Generation.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private string GenerateJsonWebToken(RTUserModel responseUser)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, responseUser.FirstName),
+                new Claim(JwtRegisteredClaimNames.Email, responseUser.EmailId),
+                new Claim(ClaimTypes.Role,responseUser.Role),
+                new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
+            };
+
+            var token = new JwtSecurityToken(configuration["Jwt:Issuer"],
+                configuration["Jwt:Audiance"],
+                claims,
+                expires: DateTime.Now.AddMinutes(120),
+                signingCredentials: credentials
+                );
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
 

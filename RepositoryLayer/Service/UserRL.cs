@@ -12,6 +12,7 @@ using CommanLayer.Exceptions;
 using CommanLayer.RequestModel;
 using CommanLayer.ResponseModel;
 using CommonLayer.RequestModel;
+using CommonLayer.ResponseModel;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Interface;
 
@@ -51,6 +52,7 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
+        
         public RUserModel RegisterUser(RegistrationUserModel user)
         {
             try
@@ -93,7 +95,7 @@ namespace RepositoryLayer.Services
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                     while (sqlDataReader.Read())
                     {
-                         status = sqlDataReader.GetInt32(0);
+                        status = sqlDataReader.GetInt32(0);
                         usermodel.UserId = Convert.ToInt32(sqlDataReader["UserId"]);
                         usermodel.DateAndTime = sqlDataReader["ModificationDate"].ToString();
                         if (status > 0)
@@ -114,7 +116,7 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public RUserModel Userlogin(UserLoginModel user)
+        public RTUserModel Userlogin(UserLoginModel user)
         {
             try
             {
@@ -136,7 +138,7 @@ namespace RepositoryLayer.Services
                 sqlCommand.Parameters.AddWithValue("@UserPassword", user.Password);
                 this.sqlConnectionVariable.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-                RUserModel usermodel = new RUserModel();
+                RTUserModel usermodel = new RTUserModel();
                 while (sqlDataReader.Read())
                 {
                     status = sqlDataReader.GetInt32(0);
@@ -200,6 +202,7 @@ namespace RepositoryLayer.Services
             SqlCommand sqlCommand = new SqlCommand("spcheckemailId", this.sqlConnectionVariable);
             sqlCommand.CommandType = CommandType.StoredProcedure;
             sqlCommand.Parameters.AddWithValue("@EmailId", emailId);
+            sqlCommand.Parameters.AddWithValue("@Table", "User");
             this.sqlConnectionVariable.Open();
             int status = 1;
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();

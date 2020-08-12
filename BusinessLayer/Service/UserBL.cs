@@ -6,6 +6,7 @@ using RepositoryLayer.Interface;
 using CommanLayer.ResponseModel;
 using CommanLayer.RequestModel;
 using CommonLayer.RequestModel;
+using CommonLayer.ResponseModel;
 
 namespace BusinessLayer.Service
 {
@@ -42,7 +43,7 @@ namespace BusinessLayer.Service
             }
         }
 
-        public RUserModel Userlogin(UserLoginModel user)
+        public RTUserModel Userlogin(UserLoginModel user)
         {
             try
             {

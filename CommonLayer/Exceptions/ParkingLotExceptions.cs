@@ -13,7 +13,9 @@ namespace CommonLayer.Exceptions
             EMPTY_EXCEPTION,
             INVALID_VEHICAL_NUMBER,
             INVALID_SLOT,
-            SLOT_NOT_AVAILABLE
+            SLOT_NOT_AVAILABLE,
+            INVALID_COLOR,
+            INVALID_PARKING_SLOT
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.Text;
 using CommanLayer.RequestModel;
 using CommanLayer.ResponseModel;
 using CommonLayer.RequestModel;
+using CommonLayer.ResponseModel;
 
 namespace RepositoryLayer.Interface
 {
@@ -17,7 +18,7 @@ namespace RepositoryLayer.Interface
         /// <returns></returns>
         RUserModel RegisterUser(RegistrationUserModel user);
 
-        RUserModel Userlogin(UserLoginModel user);
+        RTUserModel Userlogin(UserLoginModel user);
 
         List<RUserModel> GetAllUser();
 

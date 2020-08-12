@@ -4,9 +4,8 @@ using System.Text;
 
 namespace CommonLayer.ResponseModel
 {
-    public class RParkingModel
+   public class ParkDetailedModel
     {
-    
         public int ReceiptNumber { get; set; }
 
         public string VehicalOwnerName { get; set; }
@@ -27,11 +26,11 @@ namespace CommonLayer.ResponseModel
 
         public string ParkingDate { get; set; }
 
-        /*public string UnparkDate { get; set; }
+        public string UnparkDate { get; set; }
 
         public string TotalTime { get; set; }
 
-        public string TotalAmount { get; set; }*/
+        public string TotalAmount { get; set; }
 
         public string IsHandicap { get; set; }
     }

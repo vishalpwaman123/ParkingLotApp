@@ -34,8 +34,8 @@ namespace CommonLayer.RequestModel
         [RegularExpression("^(?:N|n|no|No|Y|y|yes|Yes)$", ErrorMessage = "Not valid Gender eg : Yes Or No")]
         public string IsHandicap { get; set; }
 
-        [Required]
+        /*[Required]
         [RegularExpression("^(?:A|B|C|D)$", ErrorMessage = "Not valid ParkingSlot eg : A | B | C| D ")]
-        public string ParkingSlot { get; set; }
+        public string ParkingSlot { get; set; }*/
     }   
 }
