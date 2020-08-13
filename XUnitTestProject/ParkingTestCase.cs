@@ -501,5 +501,74 @@ namespace XUnitTestProject
 
         }
 
+        /// <summary>
+        /// Test Case For Parking API Null Fields Should Return BadRequest.
+        /// </summary>
+        [Fact]
+        public void GivenTestCase_WhenAllParkingVehicleField_ShouldReturnBadRequestObjectResult()
+        {
+            
+            //Act
+            var response = parkingController.CheckAllVehical() as OkObjectResult;
+            var dataResponse = JToken.Parse(JsonConvert.SerializeObject(response.Value));
+            var responseSuccess = dataResponse["Success"].ToObject<bool>();
+            var responseMessage = dataResponse["Message"].ToString();
+
+            //Expected Values.
+            string Message = "Vehical Found";
+
+            //Asserting Values.
+            Assert.IsType<OkObjectResult>(response);
+            Assert.Equal(SuccessTrue, responseSuccess);
+            Assert.Equal(Message, responseMessage);
+
+        }
+
+        /// <summary>
+        /// Test Case For Parking API Null Fields Should Return BadRequest.
+        /// </summary>
+        [Fact]
+        public void GivenTestCase_WhenAllParkVehicleField_ShouldReturnBadRequestObjectResult()
+        {
+
+            //Act
+            var response = parkingController.CheckParkVehical() as OkObjectResult;
+            var dataResponse = JToken.Parse(JsonConvert.SerializeObject(response.Value));
+            var responseSuccess = dataResponse["Success"].ToObject<bool>();
+            var responseMessage = dataResponse["Message"].ToString();
+
+            //Expected Values.
+            string Message = "Park Vehical Is Available";
+
+            //Asserting Values.
+            Assert.IsType<OkObjectResult>(response);
+            Assert.Equal(SuccessTrue, responseSuccess);
+            Assert.Equal(Message, responseMessage);
+
+        }
+
+        /// <summary>
+        /// Test Case For Parking API Null Fields Should Return BadRequest.
+        /// </summary>
+        [Fact]
+        public void GivenTestCase_WhenAllUnParkVehicleField_ShouldReturnBadRequestObjectResult()
+        {
+
+            //Act
+            var response = parkingController.CheckUnParkVehical() as OkObjectResult;
+            var dataResponse = JToken.Parse(JsonConvert.SerializeObject(response.Value));
+            var responseSuccess = dataResponse["Success"].ToObject<bool>();
+            var responseMessage = dataResponse["Message"].ToString();
+
+            //Expected Values.
+            string Message = "UnPark Vehical Is Available";
+
+            //Asserting Values.
+            Assert.IsType<OkObjectResult>(response);
+            Assert.Equal(SuccessTrue, responseSuccess);
+            Assert.Equal(Message, responseMessage);
+
+        }
+
     }
 }

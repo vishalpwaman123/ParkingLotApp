@@ -311,16 +311,21 @@ namespace ParkingLotApi.Controllers
 
                 if (Response != null)
                 {
-                    return Ok(new { Success = true, Message = "Vehical Found" , Data = Response });
+                    bool Success = true;
+                    var Message = "Vehical Found";
+                    return Ok(new { Success , Message , Data = Response });
                 }
                 else
                 {
-                    return NotFound(new { Success = false, Message = "Vehical Not Found" });
+                    bool Success = false;
+                    var Message = "Vehical Not Found";
+                    return NotFound(new { Success , Message });
                 }
             }
             catch (Exception exception)
             {
-                return BadRequest(new { Success = false, Message = exception.Message });
+                bool Success = false;
+                return BadRequest(new { Success , Message = exception.Message });
             }
         }
 
@@ -340,11 +345,15 @@ namespace ParkingLotApi.Controllers
 
                 if (Response != null)
                 {
-                    return Ok(new { Success = true, Message = "Park Vehical Is Available", Data = Response });
+                    bool Success = true;
+                    var Message = "Park Vehical Is Available";  
+                    return Ok(new { Success, Message , Data = Response });
                 }
                 else
                 {
-                    return NotFound(new { Success = false, Message = "Park Not Vehical Is Full" });
+                    bool Success = false;
+                    var Message = "Park Not Vehical Is Full";
+                    return NotFound(new { Success , Message  });
                 }
             }
             catch (Exception exception)
@@ -369,11 +378,15 @@ namespace ParkingLotApi.Controllers
 
                 if (Response != null)
                 {
-                    return Ok(new { Success = true, Message = "UnPark Vehical Is Available", Data = Response });
+                    bool Success = true;
+                    var Message = "UnPark Vehical Is Available";
+                    return Ok(new { Success, Message , Data = Response });
                 }
                 else
                 {
-                    return NotFound(new { Success = false, Message = "UnPark Not Vehical Is Full" });
+                    bool Success = false;
+                    var Message = "UnPark Not Vehical Is Full";
+                    return NotFound(new { Success , Message  });
                 }
             }
             catch (Exception exception)
