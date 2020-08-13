@@ -210,11 +210,7 @@ namespace RepositoryLayer.Service
             try
             {
 
-                //Throws Custom Exception If VehicalNumber Is Not in Valid Format.
-                if (!Regex.IsMatch(VehicalNumber, @"^[A-Z]{2}\s[0-9]{2}\s[A-Z]{1,2}\s[0-9]{4}$"))
-                {
-                    throw new Exception(ParkingLotExceptions.ExceptionType.INVALID_VEHICAL_NUMBER.ToString() + " Please Enter Vehical In 'MH 01 AZ 2005' This Format.");
-                }
+                
 
                 int status = 0;
                 RParkingModel pmode = new RParkingModel();
@@ -273,10 +269,6 @@ namespace RepositoryLayer.Service
             try
             {
 
-                if (!Regex.IsMatch(Color, @"^[A-Z][a-zA-Z]*$"))
-                {
-                    throw new Exception(ParkingLotExceptions.ExceptionType.INVALID_COLOR.ToString() + " Please Enter Vehical Color.");
-                }
 
                 int status = 0;
                 List<RParkingModel> ParkingModelsList = new List<RParkingModel>();
@@ -337,12 +329,6 @@ namespace RepositoryLayer.Service
             try
             {
 
-                //Throws Custom Exception If VehicalNumber Is Not in Valid Format.
-                if (!Regex.IsMatch(Brand, @"^[A-Z][a-zA-Z]*$"))
-                {
-                    throw new Exception(ParkingLotExceptions.ExceptionType.INVALID_COLOR.ToString() + " Please Enter Vehical Color.");
-                }
-
                 int status = 0;
                 List<RParkingModel> ParkingModelsList = new List<RParkingModel>();
                 
@@ -401,12 +387,6 @@ namespace RepositoryLayer.Service
             try
             {
 
-                //Throws Custom Exception If VehicalNumber Is Not in Valid Format.
-                if (!Regex.IsMatch(Brand, @"^[A-Z][a-zA-Z]*$"))
-                {
-                    throw new Exception(ParkingLotExceptions.ExceptionType.INVALID_COLOR.ToString() + " Please Enter Valied Vehical Color.");
-                }
-
                 int status = 0;
                 List<RParkingModel> ParkingModelsList = new List<RParkingModel>();
                 SqlCommand sqlCommand = new SqlCommand("spGetVehicalByColorAndBrand", this.sqlConnectionVariable);
@@ -464,12 +444,6 @@ namespace RepositoryLayer.Service
         {
             try
             {
-
-                //Throws Custom Exception If VehicalNumber Is Not in Valid Format.
-                if (!Regex.IsMatch(ParkingSlot, @"^(?:A|B|C|D)$"))
-                {
-                    throw new Exception(ParkingLotExceptions.ExceptionType.INVALID_PARKING_SLOT.ToString() + " Please Enter valid slot Number eg. A,B,C,D.");
-                }
 
                 int status = 0;
                 List<RParkingModel> ParkingModelsList = new List<RParkingModel>();

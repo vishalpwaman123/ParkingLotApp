@@ -59,22 +59,25 @@ namespace RepositoryLayer.Services
             {
 
                 //Throws Custom Exception When Fields are Null.
-                if (user.FirstName == null || user.Role == null || user.Password == null || user.EmailId == null || user.LastName == null)
+                if (user.FirstName == null || user.Role == null || user.Password == null || user.EmailId == null || user.LastName == null || user.Gender == null || user.LocalAddress == null || user.Password == null || user.MobileNumber == null)
                 {
                     throw new Exception(UserExceptions.ExceptionType.NULL_EXCEPTION.ToString());
                 }
 
                 //Throws Custom Exception When Fields are Empty Strings.
-                if (user.FirstName == "" || user.Role == "" || user.Password == "" || user.EmailId == "" || user.LastName == "")
+                if (user.FirstName == "" || user.Role == "" || user.Password == "" || user.EmailId == "" || user.LastName == "" || user.Gender == "" || user.LocalAddress == "" || user.Password == "" || user.MobileNumber == "")
                 {
                     throw new Exception(UserExceptions.ExceptionType.EMPTY_EXCEPTION.ToString());
                 }
 
-                if (EmailChecking(user.EmailId) && (user.Role.Equals(Roles.Admin.ToString()) || user.Role.Equals(Roles.Driver.ToString()) ||
+                if ((user.Role.Equals(Roles.Admin.ToString()) || user.Role.Equals(Roles.Driver.ToString()) ||
                    user.Role.Equals(Roles.Police.ToString()) || user.Role.Equals(Roles.Security.ToString()) ||
                    user.Role.Equals(Roles.Owner.ToString()) || user.Role.Equals(Roles.Attendant.ToString())))
                 {
-
+                    if(!EmailChecking(user.EmailId))
+                    {
+                        return null;
+                    }
                     int status = 0;
                     RUserModel usermodel = new RUserModel();
                     user.Password = Encrypt(user.Password).ToString();
@@ -89,7 +92,7 @@ namespace RepositoryLayer.Services
                     sqlCommand.Parameters.AddWithValue("@CurrentAddress", user.LocalAddress);
                     sqlCommand.Parameters.AddWithValue("@MobileNumber", user.MobileNumber);
                     sqlCommand.Parameters.AddWithValue("@Gender", user.Gender);
-                    
+
                     this.sqlConnectionVariable.Open();
 
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
@@ -107,6 +110,10 @@ namespace RepositoryLayer.Services
                             return null;
                         }
                     }
+                }
+                else
+                {
+                    throw new Exception(UserExceptions.ExceptionType.INVALID_ROLE_EXCEPTION.ToString());
                 }
                 return null;
             }

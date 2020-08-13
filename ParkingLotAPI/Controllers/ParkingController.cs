@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BusinessLayer.Interface;
+using CommonLayer.Exceptions;
 using CommonLayer.RequestModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,7 +23,7 @@ namespace ParkingLotApi.Controllers
             this.parkingLotBL = parkingLotBL;
         }
 
-        [Authorize(Roles = "Admin, Driver, Attendant ")]
+        [Authorize(Roles = "Admin, Driver, Attendant ,Owner")]
         [HttpPost]
         [Route("Park")]
         public IActionResult Park([FromBody] ParkingModel parkingDetails)
@@ -129,27 +131,27 @@ namespace ParkingLotApi.Controllers
         {
             try
             {
+                //Throws Custom Exception If VehicalNumber Is Not in Valid Format.
+                if (!Regex.IsMatch(VehicalNumber, @"^[A-Z]{2}\s[0-9]{2}\s[A-Z]{1,2}\s[0-9]{4}$"))
+                {
+                    throw new Exception(ParkingLotExceptions.ExceptionType.INVALID_VEHICAL_NUMBER.ToString() + " Please Enter Vehical In 'MH 01 AZ 2005' This Format.");
+                }
 
                 var parkResponse = parkingLotBL.GetVehicalByNumber(VehicalNumber);
 
                 if (parkResponse != null)
                 {
                     bool Success = true;
-                    var Message = "Vehical Parked";
+                    var Message = "Vehical Available";
                     return Ok(new { Success, Message, Data = parkResponse });
                 }
-                else if (parkResponse == null)
+                else 
                 {
                     bool Success = false;
-                    var Message = "Vehical Is Already Parked";
-                    return Conflict(new { Success, Message });
-                }
-                else
-                {
-                    bool Success = false;
-                    var Message = "Lot Is Full";
+                    var Message = "Vehical Not Available";
                     return NotFound(new { Success, Message });
                 }
+                
 
             }
             catch (Exception exception)
@@ -165,27 +167,26 @@ namespace ParkingLotApi.Controllers
         {
             try
             {
+                if (!Regex.IsMatch(Color, @"^[A-Z][a-zA-Z]*$"))
+                {
+                    throw new Exception(ParkingLotExceptions.ExceptionType.INVALID_COLOR.ToString() + " Please Enter Vehical Color.");
+                }
 
                 var parkResponse = parkingLotBL.GetVehicalDetailsByColor(Color);
 
                 if (parkResponse != null)
                 {
                     bool Success = true;
-                    var Message = "Vehical Parked";
+                    var Message = "Vehical Color Available";
                     return Ok(new { Success, Message, Data = parkResponse });
                 }
-                else if (parkResponse == null)
+                else 
                 {
                     bool Success = false;
-                    var Message = "Vehical Is Already Parked";
-                    return Conflict(new { Success, Message });
-                }
-                else
-                {
-                    bool Success = false;
-                    var Message = "Lot Is Full";
+                    var Message = "Vehical Color Not Available";
                     return NotFound(new { Success, Message });
                 }
+                
 
             }
             catch (Exception exception)
@@ -200,25 +201,24 @@ namespace ParkingLotApi.Controllers
         {
             try
             {
+                //Throws Custom Exception If VehicalNumber Is Not in Valid Format.
+                if (!Regex.IsMatch(Brand, @"^[A-Z][a-zA-Z]*$"))
+                {
+                    throw new Exception(ParkingLotExceptions.ExceptionType.INVALID_COLOR.ToString() + " Please Enter Vehical Color.");
+                }
 
                 var parkResponse = parkingLotBL.GetVehicalDetailsByBrand(Brand);
 
                 if (parkResponse != null)
                 {
                     bool Success = true;
-                    var Message = "Vehical Parked";
+                    var Message = "Vehical Brand Available";
                     return Ok(new { Success, Message, Data = parkResponse });
                 }
-                else if (parkResponse == null)
+                else 
                 {
                     bool Success = false;
-                    var Message = "Vehical Is Already Parked";
-                    return Conflict(new { Success, Message });
-                }
-                else
-                {
-                    bool Success = false;
-                    var Message = "Lot Is Full";
+                    var Message = "Vehical Brand Not Available";
                     return NotFound(new { Success, Message });
                 }
 
@@ -236,27 +236,26 @@ namespace ParkingLotApi.Controllers
             try
             {
 
+                //Throws Custom Exception If VehicalNumber Is Not in Valid Format.
+                if (!Regex.IsMatch(Brand, @"^[A-Z][a-zA-Z]*$"))
+                {
+                    throw new Exception(ParkingLotExceptions.ExceptionType.INVALID_COLOR.ToString() + " Please Enter Valied Vehical Color.");
+                }
+
                 var parkResponse = parkingLotBL.GetVehicalDetailsByBrandAndColor(Brand, Color);
 
                 if (parkResponse != null)
                 {
                     bool Success = true;
-                    var Message = "Vehical Parked";
+                    var Message = "Vehical Brand And Color Available";
                     return Ok(new { Success, Message, Data = parkResponse });
                 }
-                else if (parkResponse == null)
+                else 
                 {
                     bool Success = false;
-                    var Message = "Vehical Is Already Parked";
-                    return Conflict(new { Success, Message });
-                }
-                else
-                {
-                    bool Success = false;
-                    var Message = "Lot Is Full";
+                    var Message = "Vehical Brand And Color Not Available";
                     return NotFound(new { Success, Message });
                 }
-
             }
             catch (Exception exception)
             {
@@ -272,26 +271,27 @@ namespace ParkingLotApi.Controllers
             try
             {
 
+                //Throws Custom Exception If VehicalNumber Is Not in Valid Format.
+                if (!Regex.IsMatch(ParkingSlot, @"^(?:A|B|C|D)$"))
+                {
+                    throw new Exception(ParkingLotExceptions.ExceptionType.INVALID_PARKING_SLOT.ToString() + " Please Enter valid slot Number eg. A,B,C,D.");
+                }
+
                 var parkResponse = parkingLotBL.GetVehicalDetailsByParkingSlot(ParkingSlot);
 
                 if (parkResponse != null)
                 {
                     bool Success = true;
-                    var Message = "In a Slot Vahical Found ";
+                    var Message = " Vahicals Found In a Slot ";
                     return Ok(new { Success, Message, Data = parkResponse });
                 }
-                else if (parkResponse == null)
+                else 
                 {
                     bool Success = false;
-                    var Message = "Vehical Is Already Parked";
-                    return Conflict(new { Success, Message });
-                }
-                else
-                {
-                    bool Success = false;
-                    var Message = "Lot Is Full";
+                    var Message = " Vahicals Not Found In a Slot ";
                     return NotFound(new { Success, Message });
                 }
+                
 
             }
             catch (Exception exception)

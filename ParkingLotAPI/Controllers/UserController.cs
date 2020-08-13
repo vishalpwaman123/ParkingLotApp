@@ -96,7 +96,7 @@ namespace ParkingLotApi.Controllers
         [HttpPost]
         [Route("Login")]
         public IActionResult UserLogin([FromBody] UserLoginModel user)
-        {
+          {
             try
             {
                 RTUserModel responseUser;
@@ -121,7 +121,7 @@ namespace ParkingLotApi.Controllers
                 {
                     bool Success = false;
                     var Message = "Login Failed";
-                    return Conflict(new { Success, Message });
+                    return NotFound(new { Success, Message });
                 }
             }
             catch (Exception exception)
@@ -149,7 +149,7 @@ namespace ParkingLotApi.Controllers
                 if (employees != null)
                 {
                     bool Success = true;
-                    var Message = " User Data Fetch Sucessfully ";
+                    var Message = "User Data Fetch Sucessfully";
                     return this.Ok(new { Success, Message, data = employees });
                 }
                 else
