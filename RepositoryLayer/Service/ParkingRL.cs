@@ -123,7 +123,7 @@ namespace RepositoryLayer.Service
                 if (VehicalNumber != null)
                 {
                     
-                    SqlCommand sqlCommand = new SqlCommand("spGetParkDetail", this.sqlConnectionVariable);
+                    SqlCommand sqlCommand = new SqlCommand("spGetUnParkDetail", this.sqlConnectionVariable);
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     sqlCommand.Parameters.AddWithValue("@VehicalNumber", VehicalNumber);
                     this.sqlConnectionVariable.Open();
@@ -471,6 +471,189 @@ namespace RepositoryLayer.Service
                         pmode.ParkingSlot = sqlDataReader["ParkingSlot"].ToString();
                         pmode.Status = sqlDataReader["Status"].ToString();
                         pmode.VehicalNumber = sqlDataReader["VehicalNumber"].ToString();
+                        if (Convert.ToInt32(sqlDataReader["IsHandicap"]) == 1)
+                        {
+                            pmode.IsHandicap = "Yes";
+                        }
+                        else
+                        {
+                            pmode.IsHandicap = "No";
+                        }
+                        ParkingModelsList.Add(pmode);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                return ParkingModelsList;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// Function To Find Vehical By Number.
+        /// </summary>
+        /// <param name="vehicalNumber"></param>
+        /// <returns></returns>
+        public List<RParkingModel> CheckAllVehical()
+        {
+            try
+            {
+
+                int status = 0;
+                List<RParkingModel> ParkingModelsList = new List<RParkingModel>();
+
+                SqlCommand sqlCommand = new SqlCommand("spParkDetails", this.sqlConnectionVariable);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@Status", "ALL");
+                this.sqlConnectionVariable.Open();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    status = sqlDataReader.GetInt32(0);
+                    if (status > 0)
+                    {
+                        RParkingModel pmode = new RParkingModel();
+                        pmode.ReceiptNumber = Convert.ToInt32(sqlDataReader["ReceiptNumber"]);
+                        pmode.VehicalOwnerEmail = sqlDataReader["VehicalOwnerEmail"].ToString();
+                        pmode.VehicalOwnerName = sqlDataReader["VehicalOwnerName"].ToString();
+                        pmode.Brand = sqlDataReader["Brand"].ToString();
+                        pmode.Color = sqlDataReader["Color"].ToString();
+                        pmode.DriverName = sqlDataReader["DriverName"].ToString();
+                        pmode.ParkingDate = sqlDataReader["ParkingDate"].ToString();
+                        pmode.ParkingSlot = sqlDataReader["ParkingSlot"].ToString();
+                        pmode.Status = sqlDataReader["Status"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["VehicalNumber"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["UnparkDate"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["TotalTime"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["TotalAmount"].ToString();
+                        if (Convert.ToInt32(sqlDataReader["IsHandicap"]) == 1)
+                        {
+                            pmode.IsHandicap = "Yes";
+                        }
+                        else
+                        {
+                            pmode.IsHandicap = "No";
+                        }
+                        ParkingModelsList.Add(pmode);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                return ParkingModelsList;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// Function To Find Vehical By Number.
+        /// </summary>
+        /// <param name="vehicalNumber"></param>
+        /// <returns></returns>
+        public List<RParkingModel> CheckParkVehical()
+        {
+            try
+            {
+
+                int status = 0;
+                List<RParkingModel> ParkingModelsList = new List<RParkingModel>();
+
+                SqlCommand sqlCommand = new SqlCommand("spParkDetails", this.sqlConnectionVariable);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@Status", "Parked");
+                this.sqlConnectionVariable.Open();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    status = sqlDataReader.GetInt32(0);
+                    if (status > 0)
+                    {
+                        RParkingModel pmode = new RParkingModel();
+                        pmode.ReceiptNumber = Convert.ToInt32(sqlDataReader["ReceiptNumber"]);
+                        pmode.VehicalOwnerEmail = sqlDataReader["VehicalOwnerEmail"].ToString();
+                        pmode.VehicalOwnerName = sqlDataReader["VehicalOwnerName"].ToString();
+                        pmode.Brand = sqlDataReader["Brand"].ToString();
+                        pmode.Color = sqlDataReader["Color"].ToString();
+                        pmode.DriverName = sqlDataReader["DriverName"].ToString();
+                        pmode.ParkingDate = sqlDataReader["ParkingDate"].ToString();
+                        pmode.ParkingSlot = sqlDataReader["ParkingSlot"].ToString();
+                        pmode.Status = sqlDataReader["Status"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["VehicalNumber"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["UnparkDate"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["TotalTime"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["TotalAmount"].ToString();
+                        if (Convert.ToInt32(sqlDataReader["IsHandicap"]) == 1)
+                        {
+                            pmode.IsHandicap = "Yes";
+                        }
+                        else
+                        {
+                            pmode.IsHandicap = "No";
+                        }
+                        ParkingModelsList.Add(pmode);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                return ParkingModelsList;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// Function To Find Vehical By Number.
+        /// </summary>
+        /// <param name="vehicalNumber"></param>
+        /// <returns></returns>
+        public List<RParkingModel> CheckUnParkVehical()
+        {
+            try
+            {
+
+                int status = 0;
+                List<RParkingModel> ParkingModelsList = new List<RParkingModel>();
+
+                SqlCommand sqlCommand = new SqlCommand("spParkDetails", this.sqlConnectionVariable);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@Status", "UnParked");
+                this.sqlConnectionVariable.Open();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    status = sqlDataReader.GetInt32(0);
+                    if (status > 0)
+                    {
+                        RParkingModel pmode = new RParkingModel();
+                        pmode.ReceiptNumber = Convert.ToInt32(sqlDataReader["ReceiptNumber"]);
+                        pmode.VehicalOwnerEmail = sqlDataReader["VehicalOwnerEmail"].ToString();
+                        pmode.VehicalOwnerName = sqlDataReader["VehicalOwnerName"].ToString();
+                        pmode.Brand = sqlDataReader["Brand"].ToString();
+                        pmode.Color = sqlDataReader["Color"].ToString();
+                        pmode.DriverName = sqlDataReader["DriverName"].ToString();
+                        pmode.ParkingDate = sqlDataReader["ParkingDate"].ToString();
+                        pmode.ParkingSlot = sqlDataReader["ParkingSlot"].ToString();
+                        pmode.Status = sqlDataReader["Status"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["VehicalNumber"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["UnparkDate"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["TotalTime"].ToString();
+                        pmode.VehicalNumber = sqlDataReader["TotalAmount"].ToString();
                         if (Convert.ToInt32(sqlDataReader["IsHandicap"]) == 1)
                         {
                             pmode.IsHandicap = "Yes";

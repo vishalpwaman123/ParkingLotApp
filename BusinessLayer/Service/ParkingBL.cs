@@ -162,5 +162,55 @@ namespace BusinessLayer.Service
             }
         }
 
+        /// <summary>
+        /// Function For Parking Vehical.
+        /// </summary>
+        /// <param name="parkingDetails"></param>
+        /// <returns></returns>
+        public List<RParkingModel> CheckAllVehical()
+        {
+            try
+            {
+                return this.parkingLotRL.CheckAllVehical();
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// Function For Parking Vehical.
+        /// </summary>
+        /// <param name="parkingDetails"></param>
+        /// <returns></returns>
+        public List<RParkingModel> CheckParkVehical()
+        {
+            try
+            {
+                return this.parkingLotRL.CheckParkVehical();
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// Function For Parking Vehical.
+        /// </summary>
+        /// <param name="parkingDetails"></param>
+        /// <returns></returns>
+        public List<RParkingModel> CheckUnParkVehical()
+        {
+            try
+            {
+                return this.parkingLotRL.CheckUnParkVehical();
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
     }
 }

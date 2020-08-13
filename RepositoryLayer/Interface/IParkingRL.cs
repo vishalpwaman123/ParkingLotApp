@@ -67,5 +67,26 @@ namespace RepositoryLayer.Interface
         /// <returns></returns>
         List<RParkingModel> GetVehicalDetailsByParkingSlot(string ParkingSlot);
 
+        /// <summary>
+        /// Abstract Function For GetVehicalDetailsByParkingSlot Vehical.
+        /// </summary>
+        /// <param name="parkingDetails"></param>
+        /// <returns></returns>
+        List<RParkingModel> CheckAllVehical();
+
+        /// <summary>
+        /// Abstract Function For GetVehicalDetailsByParkingSlot Vehical.
+        /// </summary>
+        /// <param name="parkingDetails"></param>
+        /// <returns></returns>
+        List<RParkingModel> CheckParkVehical();
+
+        /// <summary>
+        /// Abstract Function For GetVehicalDetailsByParkingSlot Vehical.
+        /// </summary>
+        /// <param name="parkingDetails"></param>
+        /// <returns></returns>
+        List<RParkingModel> CheckUnParkVehical();
+
     }
 }

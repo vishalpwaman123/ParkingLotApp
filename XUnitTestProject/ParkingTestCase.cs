@@ -1,30 +1,42 @@
-﻿using BusinessLayer.Interface;
-using BusinessLayer.Service;
-using CommonLayer.RequestModel;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using ParkingLotApi.Controllers;
-using RepositoryLayer.Interface;
-using RepositoryLayer.Service;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
-using Xunit;
+﻿//-------------------------------------------------------------------------
+// <copyright file="ParkingTestCase.cs" company="BridgeLab">
+//      Copyright (c) Company. All rights reserved.
+// </copyright>
+// <author>Vishal Waman</author>
+//-------------------------------------------------------------------------
 
 namespace XUnitTestProject
 {
+    using BusinessLayer.Interface;
+    using BusinessLayer.Service;
+    using CommonLayer.RequestModel;
+    using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using ParkingLotApi.Controllers;
+    using RepositoryLayer.Interface;
+    using RepositoryLayer.Service;
+    using Xunit;
     public class ParkingTestCase
     {
-
+        /// <summary>
+        /// Declare Parking Inteface BL Variable
+        /// </summary>
         private readonly IParkingBL parkingLotBL;
+
+        /// <summary>
+        /// Declare Parking Interface RL Variable
+        /// </summary>
         private readonly IParkingRL parkingLotRL;
 
+        /// <summary>
+        /// Declare Parking Controller Variable
+        /// </summary>
         ParkingController parkingController;
 
+        /// <summary>
+        /// Declare Constructor
+        /// </summary>
         public ParkingTestCase()
         {
 
@@ -34,6 +46,9 @@ namespace XUnitTestProject
 
         }
 
+        /// <summary>
+        /// Declare Parking model instance
+        /// </summary>
         ParkingModel park = new ParkingModel();
 
         private const bool SuccessFalse = false;

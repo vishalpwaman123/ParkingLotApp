@@ -102,7 +102,7 @@ namespace ParkingLotApi.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin, Owner, Security")]
         [HttpGet]
-        [Route("Park/IsSlotAvailble")]
+        [Route("Slot/Availability")]
         public IActionResult CheckLotStatus()
         {
             try
@@ -126,7 +126,7 @@ namespace ParkingLotApi.Controllers
 
         [Authorize(Roles = "Admin, Driver ")]
         [HttpGet]
-        [Route("Vehicals/{VehicalNumber}")]
+        [Route("Vehical/{VehicalNumber}")]
         public IActionResult GetVehicalByNumber([FromRoute] string VehicalNumber)
         {
             try
@@ -151,8 +151,6 @@ namespace ParkingLotApi.Controllers
                     var Message = "Vehical Not Available";
                     return NotFound(new { Success, Message });
                 }
-                
-
             }
             catch (Exception exception)
             {
@@ -162,7 +160,7 @@ namespace ParkingLotApi.Controllers
 
         [Authorize(Roles = "Admin, Police, Security, Owner")]
         [HttpGet]
-        [Route("Vehical/{Color}")]
+        [Route("Vehicals/{Color}")]
         public IActionResult GetVehicalDetailsByColor([FromRoute] string Color)
         {
             try
@@ -291,14 +289,99 @@ namespace ParkingLotApi.Controllers
                     var Message = " Vahicals Not Found In a Slot ";
                     return NotFound(new { Success, Message });
                 }
-                
-
             }
             catch (Exception exception)
             {
                 return BadRequest(new { Success = false, Message = exception.Message });
             }
         }
+
+        /// <summary>
+        /// Function For Checking Parking Lot Status.
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin, Owner, Security")]
+        [HttpGet]
+        [Route("Vehicals/All")]
+        public IActionResult CheckAllVehical()
+        {
+            try
+            {
+                var Response = this.parkingLotBL.CheckAllVehical();
+
+                if (Response != null)
+                {
+                    return Ok(new { Success = true, Message = "Vehical Found" , Data = Response });
+                }
+                else
+                {
+                    return NotFound(new { Success = false, Message = "Vehical Not Found" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(new { Success = false, Message = exception.Message });
+            }
+        }
+
+
+        /// <summary>
+        /// Function For Checking Parking Lot Status.
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin, Owner, Security")]
+        [HttpGet]
+        [Route("Vehicals/AllPark")]
+        public IActionResult CheckParkVehical()
+        {
+            try
+            {
+                var Response = this.parkingLotBL.CheckParkVehical();
+
+                if (Response != null)
+                {
+                    return Ok(new { Success = true, Message = "Park Vehical Is Available", Data = Response });
+                }
+                else
+                {
+                    return NotFound(new { Success = false, Message = "Park Not Vehical Is Full" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(new { Success = false, Message = exception.Message });
+            }
+        }
+
+
+        /// <summary>
+        /// Function For Checking Parking Lot Status.
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin, Owner, Security")]
+        [HttpGet]
+        [Route("Vehicals/AllUnPark")]
+        public IActionResult CheckUnParkVehical()
+        {
+            try
+            {
+                var Response = this.parkingLotBL.CheckUnParkVehical();
+
+                if (Response != null)
+                {
+                    return Ok(new { Success = true, Message = "UnPark Vehical Is Available", Data = Response });
+                }
+                else
+                {
+                    return NotFound(new { Success = false, Message = "UnPark Not Vehical Is Full" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(new { Success = false, Message = exception.Message });
+            }
+        }
+
 
     }
 }
