@@ -33,6 +33,13 @@ namespace BusinessLayer.Interface
         /// </summary>
         /// <param name="parkingDetails"></param>
         /// <returns></returns>
+        ParkDetailedModel DeleteVehicalById(int ParkingId);
+
+        /// <summary>
+        /// Abstract Function For UnParking Vehical.
+        /// </summary>
+        /// <param name="parkingDetails"></param>
+        /// <returns></returns>
         bool CheckLotStatus();
 
         /// <summary>

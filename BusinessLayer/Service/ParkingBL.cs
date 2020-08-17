@@ -64,6 +64,23 @@ namespace BusinessLayer.Service
         /// </summary>
         /// <param name="parkingDetails"></param>
         /// <returns></returns>
+        public ParkDetailedModel DeleteVehicalById(int ParkingId)
+        {
+            try
+            {
+                return this.parkingLotRL.DeleteVehicalById(ParkingId);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// Function For Parking Vehical.
+        /// </summary>
+        /// <param name="parkingDetails"></param>
+        /// <returns></returns>
         public bool CheckLotStatus()
         {
             try

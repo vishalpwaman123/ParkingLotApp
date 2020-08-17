@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLayer", "CommonLayer\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryLayer", "RepositoryLayer\RepositoryLayer.csproj", "{0069998E-A4AF-4F21-BA32-64763B6B2EC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestProject", "XUnitTestProject\XUnitTestProject.csproj", "{587A9266-5018-4B56-A583-E7667A95385C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestProject", "XUnitTestProject\XUnitTestProject.csproj", "{587A9266-5018-4B56-A583-E7667A95385C}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ParkingLotDatabase", "ParkingLotDatabase\ParkingLotDatabase.sqlproj", "{9EAF3A60-5119-47AF-A7C6-40D64EB0E2B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSMQ", "MSMQ\MSMQ.csproj", "{9997FCC8-8792-4390-8AFE-20547FCCA8B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{9EAF3A60-5119-47AF-A7C6-40D64EB0E2B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EAF3A60-5119-47AF-A7C6-40D64EB0E2B7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9EAF3A60-5119-47AF-A7C6-40D64EB0E2B7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9997FCC8-8792-4390-8AFE-20547FCCA8B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9997FCC8-8792-4390-8AFE-20547FCCA8B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9997FCC8-8792-4390-8AFE-20547FCCA8B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9997FCC8-8792-4390-8AFE-20547FCCA8B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

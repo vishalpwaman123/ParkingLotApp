@@ -33,18 +33,6 @@ namespace RepositoryLayer.Service
             {
                 int HandicaptStatus;
 
-                if (parkingAttribute.VehicalOwnerName == null || parkingAttribute.VehicalNumber == null || parkingAttribute.VehicalOwnerEmail == null ||
-                     parkingAttribute.Brand == null || parkingAttribute.Color == null || parkingAttribute.DriverName == null )
-                {
-                    throw new Exception(ParkingLotExceptions.ExceptionType.NULL_EXCEPTION.ToString());
-                }
-
-                if (parkingAttribute.VehicalOwnerName == "" || parkingAttribute.VehicalNumber == "" || parkingAttribute.VehicalOwnerEmail == "" ||
-                    parkingAttribute.Brand == "" || parkingAttribute.Color == "" || parkingAttribute.DriverName == "")
-                {
-                    throw new Exception(ParkingLotExceptions.ExceptionType.EMPTY_EXCEPTION.ToString());
-                }
-
                 if (parkingAttribute.IsHandicap == "y" || parkingAttribute.IsHandicap == "Y" || parkingAttribute.IsHandicap == "yes" || parkingAttribute.IsHandicap == "Yes")
                 {
                     HandicaptStatus = 1;
@@ -170,6 +158,65 @@ namespace RepositoryLayer.Service
             int TotalAmount = Amount > RatePerMin ? Amount : RatePerMin;
             return TotalAmount;
         }
+
+
+
+        /// <summary>
+        /// Function For Unpark Api.
+        /// </summary>
+        /// <param name="VehicalNumber"></param>
+        /// <returns></returns>
+        public ParkDetailedModel DeleteVehicalById(int ParkingId)
+        {
+            try
+            {
+                int status;
+                ParkDetailedModel Parkmodel = new ParkDetailedModel();
+                if (ParkingId != 0)
+                {
+
+                    SqlCommand sqlCommand = new SqlCommand("spDeleteVehicalById", this.sqlConnectionVariable);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@ParkingId", ParkingId);
+                    this.sqlConnectionVariable.Open();
+                    SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                    while (sqlDataReader.Read())
+                    {
+                        status = sqlDataReader.GetInt32(0);
+
+                        if (status > 0)
+                        {
+                            Parkmodel.ReceiptNumber = Convert.ToInt32(sqlDataReader["ReceiptNumber"]);
+                            Parkmodel.VehicalOwnerName = sqlDataReader["VehicalOwnerName"].ToString();
+                            Parkmodel.VehicalOwnerEmail = sqlDataReader["VehicalOwnerEmail"].ToString();
+                            Parkmodel.VehicalNumber = sqlDataReader["VehicalNumber"].ToString();
+                            Parkmodel.Brand = sqlDataReader["Brand"].ToString();
+                            Parkmodel.Color = sqlDataReader["Color"].ToString();
+                            Parkmodel.DriverName = sqlDataReader["DriverName"].ToString();
+                            Parkmodel.IsHandicap = sqlDataReader["IsHandicap"].ToString();
+                            Parkmodel.ParkingSlot = sqlDataReader["ParkingSlot"].ToString();
+                            Parkmodel.Status = sqlDataReader["Status"].ToString();
+                            Parkmodel.ParkingDate = sqlDataReader["ParkingDate"].ToString();
+                            Parkmodel.UnparkDate = sqlDataReader["UnparkDate"].ToString();
+                            Parkmodel.TotalTime = sqlDataReader["Minutes"].ToString() + " Minute";
+                            Parkmodel.TotalAmount = AmountCanculation(Convert.ToInt32(sqlDataReader["Minutes"])).ToString() + " Rupees";
+                            break;
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }
+                return Parkmodel;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+
 
 
         /// <summary>
