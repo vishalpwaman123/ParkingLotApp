@@ -11,6 +11,7 @@ namespace XUnitTestProject
     using BusinessLayer.Service;
     using CommonLayer.RequestModel;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Distributed;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using ParkingLotApi.Controllers;
@@ -34,6 +35,8 @@ namespace XUnitTestProject
         /// </summary>
         ParkingController parkingController;
 
+        private readonly IDistributedCache distributedCache;
+
         /// <summary>
         /// Declare Constructor
         /// </summary>
@@ -42,7 +45,7 @@ namespace XUnitTestProject
 
             parkingLotRL = new ParkingRL();
             parkingLotBL = new ParkingBL(parkingLotRL);
-            parkingController = new ParkingController(parkingLotBL);
+            parkingController = new ParkingController(parkingLotBL, distributedCache);
 
         }
 

@@ -49,7 +49,7 @@ namespace MSMQ
 
                 // Send Mail
                 smtpClient.Send(mail);
-                Console.WriteLine("link has been sent to your mail!!!");
+                Console.WriteLine("link has been sent to your mail!!!\n\n\n");
             }
             catch (Exception exception)
             {

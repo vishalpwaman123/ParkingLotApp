@@ -14,10 +14,10 @@ namespace MSMQ
                 var mail = new MimeMessage();
 
                 // mail sender
-                mail.From.Add(address: new MailboxAddress("Employee Management", "1001thebeast1001@gmail.com"));
+                mail.From.Add(address: new MailboxAddress("Parking Lot", "1001thebeast1001@gmail.com"));
 
                 // messsage reciever
-                mail.To.Add(new MailboxAddress("Employee Management", "1001thebeast1001@gmail.com"));
+                mail.To.Add(new MailboxAddress("Parking Lot", "1001thebeast1001@gmail.com"));
 
                 // subject of email
                 mail.Subject = "Registration";
